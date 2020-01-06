@@ -45,7 +45,7 @@ set smartcase
 set wildignore+=*.pyc,*.o,*.class,*.lo,.git,vendor/*,node_modules/**,bower_components/**,*/build_gradle/*,*/build_intellij/*,*/build/*,*/cassandra_data/*
 set tags+=gems.tags
 set mouse=
-set ttymouse=
+"set ttymouse=
 set backupcopy=yes " Setting backup copy preserves file inodes, which are needed for Docker file mounting
 if v:version > 704 || v:version == 704 && has('patch2201') " signcolumn wasn't added until vim 7.4.2201
   set signcolumn=yes
@@ -267,6 +267,24 @@ if executable('java-language-server')
   autocmd FileType java nmap <buffer> gr <plug>(lsp-references)
   autocmd FileType java nmap <buffer> go <plug>(lsp-document-symbol)
   autocmd FileType java nmap <buffer> gS <plug>(lsp-workspace-symbol)
+
+  let g:asyncomplete_smart_completion = 1
+  let g:lsp_insert_text_enabled = 1
+endif
+
+" Language server for Scala
+if executable('scala-language-server')
+  autocmd User lsp_setup call lsp#register_server({
+    \ 'name': 'scala-language-server',
+    \ 'cmd': {server_info->['scala-language-server']},
+    \ 'whitelist': ['scala'],
+    \ })
+  autocmd FileType scala nmap <buffer> <C-e> <plug>(lsp-document-diagnostics)
+  autocmd FileType scala nmap <buffer> <C-i> <plug>(lsp-hover)
+  autocmd FileType scala nmap <buffer> <C-]> <plug>(lsp-definition)
+  autocmd FileType scala nmap <buffer> gr <plug>(lsp-references)
+  autocmd FileType scala nmap <buffer> go <plug>(lsp-document-symbol)
+  autocmd FileType scala nmap <buffer> gS <plug>(lsp-workspace-symbol)
 
   let g:asyncomplete_smart_completion = 1
   let g:lsp_insert_text_enabled = 1
